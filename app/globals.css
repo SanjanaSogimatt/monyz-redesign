@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+  body { @apply bg-ink-deep text-paper font-sans antialiased; }
+  h1, h2, h3 { text-wrap: balance; }
+  p, li, dd { text-wrap: pretty; }
+  ::selection { background: #02FE93; color: #0E1F13; }
+  :focus-visible { outline: 2px solid #02FE93; outline-offset: 4px; border-radius: 8px; }
+}
+
+@layer components {
+  /* Main button: text-base semibold, 8px x 12px padding (skill B1/B2) */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-full bg-mint py-2 px-3 text-base font-semibold text-ink-deep
+      transition duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#5BFFB5] active:translate-y-0 active:scale-[0.98]
+      disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 rounded-full border border-mint-line py-2 px-3 text-base font-semibold text-paper
+      transition duration-300 ease-out hover:bg-mint-hover hover:border-mint-soft active:scale-[0.98];
+  }
+  .kicker { @apply font-mono text-xs uppercase tracking-widest text-mint; }
+  .card { @apply rounded-3xl border border-mint-line bg-ink; }
+  .hero-gradient {
+    background-image: linear-gradient(90deg, #F4FBF6 0%, #9BB8A3 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .outline-type { -webkit-text-stroke: 1px rgba(117,250,157,0.28); color: transparent; }
+}
+
+/* Scroll reveal: rise 32px, fade in, base curve */
+.reveal { opacity: 0; translate: 0 32px; transition: opacity 700ms cubic-bezier(0.22,1,0.36,1), translate 700ms cubic-bezier(0.22,1,0.36,1), transform 500ms cubic-bezier(0.22,1,0.36,1), border-color 300ms cubic-bezier(0.22,1,0.36,1); }
+.reveal.is-in { opacity: 1; translate: 0 0; }
+
+/* Tagline words */
+.tw { color: rgba(244,251,246,0.28); transition: color 500ms cubic-bezier(0.22,1,0.36,1); }
+.tw.on { color: #F4FBF6; }
+.tw.on.accent { color: #02FE93; }
+
+/* Gentle float for hero chips */
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+.float { animation: float 6s cubic-bezier(0.22,1,0.36,1) infinite; }
+.float-delay { animation-delay: -3s; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { translate: none; transition: opacity 400ms cubic-bezier(0.22,1,0.36,1); }
+  .float { animation: none; }
+  * { transition-property: opacity, color, background-color, border-color !important; }
+}
+
+/* ───────── Banknote line work ───────── */
+.draw path, .draw line { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 2400ms cubic-bezier(0.22,1,0.36,1); transition-delay: var(--d, 0ms); }
+.draw.is-in path, .draw.is-in line { stroke-dashoffset: 0; }
+
+/* ───────── Hero money routes ───────── */
+.hero-fx .trail { stroke-dasharray: 0.16 1.2; stroke-dashoffset: 0.16; opacity: 0;
+  animation: trail var(--cycle) cubic-bezier(0.22,1,0.36,1) var(--delay) infinite; }
+@keyframes trail {
+  0% { stroke-dashoffset: 0.16; opacity: 0; }
+  6% { opacity: 1; }
+  55% { stroke-dashoffset: -0.98; opacity: 1; }
+  62%, 100% { stroke-dashoffset: -0.98; opacity: 0; }
+}
+.hero-fx .beep, .hero-fx .beep-dot { transform-box: fill-box; transform-origin: center; opacity: 0;
+  animation: beep var(--cycle) cubic-bezier(0.22,1,0.36,1) var(--delay) infinite; }
+@keyframes beep {
+  0%, 50% { opacity: 0; transform: scale(0.3); }
+  56% { opacity: 1; transform: scale(0.6); }
+  80%, 100% { opacity: 0; transform: scale(2.2); }
+}
+.hero-fx .beep-dot { animation-name: beep-dot; }
+@keyframes beep-dot { 0%, 50% { opacity: 0; } 56% { opacity: 1; } 85%, 100% { opacity: 0; } }
+.hero-fx .glint { opacity: 0; animation: glint 5s cubic-bezier(0.22,1,0.36,1) infinite; }
+@keyframes glint { 0%, 100% { opacity: 0; } 30% { opacity: 0.7; } 60% { opacity: 0; } }
+.hero-fx .moon { opacity: 0.18; animation: moon 6s cubic-bezier(0.22,1,0.36,1) infinite alternate; }
+@keyframes moon { to { opacity: 0.32; } }
+
+
+
+/* Cream paper sections */
+.paper { background: #ECE7D6; color: #0E1F13; }
+.paper .tw { color: rgba(14,31,19,0.2); }
+.paper .tw.on { color: #0E1F13; }
+.paper .tw.on.accent { color: #1E7A4C; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-fx .trail, .hero-fx .beep, .hero-fx .beep-dot, .hero-fx .glint, .hero-fx .moon { animation: none; }
+  .hero-fx .trail { opacity: 0.6; stroke-dasharray: none; }
+  .draw path, .draw line { stroke-dashoffset: 0; transition: none; }
+}
+
+/* Blend the engraving into the flat hero sky (a mask, not a background gradient) */
+.hero-mask { -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 11%); mask-image: linear-gradient(to bottom, transparent 0%, #000 11%); }
+
+/* ───────── Three ways in: Option B cards ───────── */
+.offer-num { color: transparent; -webkit-text-stroke: 1.5px rgba(117,250,157,0.4); line-height: 1; transition: -webkit-text-stroke-color 300ms cubic-bezier(0.22,1,0.36,1); }
+.offer.soon .offer-num { -webkit-text-stroke-color: rgba(117,250,157,0.2); }
+.offer-rosette { color: rgba(117,250,157,0.22); transition: transform 1200ms cubic-bezier(0.22,1,0.36,1), color 300ms cubic-bezier(0.22,1,0.36,1); }
+.offer:is(:hover, :focus-within) .offer-rosette { transform: rotate(30deg); }
+.offer.soon .offer-rosette { color: rgba(117,250,157,0.1); }
+.offer-engraving { opacity: 0.16; object-position: center 72%;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 12%, #000 42%, rgba(0,0,0,0.3) 78%);
+          mask-image: linear-gradient(to bottom, transparent 12%, #000 42%, rgba(0,0,0,0.3) 78%); }
+.offer.soon .offer-engraving { opacity: 0.1; filter: grayscale(1); }
+/* Mint hover (not on the "coming soon" card) */
+.offer:not(.soon):is(:hover, :focus-within) { color: #0E1F13; }
+.offer:not(.soon):is(:hover, :focus-within) .offer-num { -webkit-text-stroke-color: #0E1F13; }
+.offer:not(.soon):is(:hover, :focus-within) .offer-rosette { color: rgba(14,31,19,0.18); }
+.offer:not(.soon):is(:hover, :focus-within) .offer-engraving { mix-blend-mode: multiply; opacity: 0.14; filter: grayscale(1); }
+.offer:not(.soon):is(:hover, :focus-within) .offer-tag, .offer:not(.soon):is(:hover, :focus-within) .offer-link { color: #0E1F13; }
+.offer:not(.soon):is(:hover, :focus-within) .offer-body { color: rgba(14,31,19,0.75); }
+.offer:not(.soon):is(:hover, :focus-within) .offer-icon { background: rgba(14,31,19,0.1); color: #0E1F13; }
+@media (prefers-reduced-motion: reduce) { .offer:hover .offer-rosette { transform: none; } }
